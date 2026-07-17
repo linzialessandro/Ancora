@@ -7,7 +7,8 @@ import { DayHeader } from './components/DayHeader';
 import { EntryList } from './components/EntryList';
 import { EntryForm } from './components/EntryForm';
 import { SettingsScreen } from './components/SettingsScreen';
-import { Plus, Settings as SettingsIcon, FileDown } from 'lucide-react';
+import { InfoScreen } from './components/InfoScreen';
+import { Plus, Settings as SettingsIcon, FileDown, Info } from 'lucide-react';
 
 function App() {
   const {
@@ -29,6 +30,7 @@ function App() {
   const [showForm, setShowForm] = useState(false);
   const [editingEntry, setEditingEntry] = useState<Entry | undefined>(undefined);
   const [showSettings, setShowSettings] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
   const [pdfMessage, setPdfMessage] = useState<string | null>(null);
 
   if (!isReady) {
@@ -103,7 +105,16 @@ function App() {
             </span>
             <h1 className="text-xl font-bold tracking-tight">Ancora</h1>
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-0.5">
+            <button
+              type="button"
+              onClick={() => setShowInfo(true)}
+              className="p-2.5 min-w-11 min-h-11 hover:bg-white/20 rounded-full transition-colors"
+              title="Informazioni"
+              aria-label="Apri informazioni e donazioni"
+            >
+              <Info size={22} />
+            </button>
             <button
               type="button"
               onClick={handleExportPdf}
@@ -181,6 +192,8 @@ function App() {
           onClose={() => setShowSettings(false)}
         />
       )}
+
+      {showInfo && <InfoScreen onClose={() => setShowInfo(false)} />}
     </div>
   );
 }

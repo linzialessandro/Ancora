@@ -104,6 +104,11 @@ Abilita **Settings → Pages → GitHub Actions** nel repository se non è già 
 
 ---
 
+## Autore
+
+Creato da **Alessandro Linzi** per la sua fidanzata, con rispetto e cura.  
+Nell’app, il pulsante **Informazioni** (ⓘ) spiega l’uso in breve e, se lo desideri, come supportare lo sviluppo con una donazione volontaria via PayPal.
+
 ## Licenza
 
 Rilasciato sotto **[MIT License](./LICENSE)**.  
