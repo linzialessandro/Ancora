@@ -91,8 +91,7 @@ export function InfoScreen({ onClose }: Props) {
             </h3>
             <p className="text-sm text-ink leading-relaxed">
               Ancora è stata sviluppata da{' '}
-              <strong className="font-semibold">Alessandro Linzi</strong> per la
-              sua fidanzata, che ama e supporta. Un diario discreto e senza
+              <strong className="font-semibold">Alessandro Linzi</strong> per amore. Un diario discreto e senza
               giudizi, pensato per accompagnare con rispetto e semplicità.
             </p>
           </section>
