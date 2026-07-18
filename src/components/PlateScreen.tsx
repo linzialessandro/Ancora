@@ -37,8 +37,7 @@ export function PlateScreen({ onBack, onInfo, onDonate }: Props) {
 
       <div className="flex-1 overflow-y-auto bg-gradient-to-b from-lilac-50 to-lilac-100/40 px-4 py-5 pb-[max(2rem,env(safe-area-inset-bottom))]">
         <p className="text-sm text-ink-muted text-center leading-relaxed mb-4 px-1">
-          Tocca una fetta per capire perché conta. In questa visualizzazione tutte le sezioni
-          sono rappresentate in misura uguale per ricordarti che non ci sono cibi più importanti di altri.
+          Tocca una fetta per capire perché conta.
         </p>
 
         <div className="flex justify-center mb-5">
