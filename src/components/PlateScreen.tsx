@@ -21,7 +21,7 @@ export function PlateScreen({ onBack, onInfo, onDonate }: Props) {
   const slices = useMemo(
     () =>
       buildPieSlices(
-        PLATE_COMPONENTS.map((c) => ({ id: c.id, percent: c.percent })),
+        PLATE_COMPONENTS.map((c) => ({ id: c.id, value: 1 })),
         CX,
         CY,
         R,
@@ -37,8 +37,8 @@ export function PlateScreen({ onBack, onInfo, onDonate }: Props) {
 
       <div className="flex-1 overflow-y-auto bg-gradient-to-b from-lilac-50 to-lilac-100/40 px-4 py-5 pb-[max(2rem,env(safe-area-inset-bottom))]">
         <p className="text-sm text-ink-muted text-center leading-relaxed mb-4 px-1">
-          Tocca una fetta per capire perché conta. Le percentuali sono indicative, non una
-          dieta prescritta.
+          Tocca una fetta per capire perché conta. In questa visualizzazione tutte le sezioni
+          sono rappresentate in misura uguale per ricordarti che non ci sono cibi più importanti di altri.
         </p>
 
         <div className="flex justify-center mb-5">
@@ -63,7 +63,7 @@ export function PlateScreen({ onBack, onInfo, onDonate }: Props) {
                   className="cursor-pointer transition-opacity outline-none focus-visible:stroke-lilac-700"
                   tabIndex={0}
                   role="button"
-                  aria-label={`${comp.label}, ${comp.percent} percento`}
+                  aria-label={comp.label}
                   onClick={() => setSelectedId(comp.id)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -106,7 +106,6 @@ export function PlateScreen({ onBack, onInfo, onDonate }: Props) {
                   aria-hidden
                 />
                 <span className="flex-1 font-medium text-ink text-sm">{comp.label}</span>
-                <span className="text-sm text-ink-muted tabular-nums">{comp.percent}%</span>
               </button>
             </li>
           ))}
@@ -120,9 +119,6 @@ export function PlateScreen({ onBack, onInfo, onDonate }: Props) {
 
       {selected && (
         <DetailPanel title={selected.label} onClose={() => setSelectedId(null)}>
-          <p className="text-xs font-semibold uppercase tracking-wide text-lilac-700">
-            Circa {selected.percent}% (indicativo)
-          </p>
           <div className="rounded-xl bg-lilac-50 border border-lilac-100 p-3">
             <p className="text-xs font-semibold text-lilac-700 uppercase tracking-wide mb-1">
               Perché

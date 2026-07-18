@@ -3,7 +3,6 @@ import type { PlateComponentId } from '../types/models';
 export type PlateComponent = {
   id: PlateComponentId;
   label: string;
-  percent: number;
   color: string;
   why: string;
   science: string;
@@ -14,7 +13,6 @@ export const PLATE_COMPONENTS: PlateComponent[] = [
   {
     id: 'vegetables',
     label: 'Ortaggi',
-    percent: 30,
     color: '#7d9b7a',
     why: 'Portano volume, fibre, acqua e molti micronutrienti con densità calorica spesso moderata.',
     science:
@@ -23,43 +21,38 @@ export const PLATE_COMPONENTS: PlateComponent[] = [
   {
     id: 'carbs',
     label: 'Carboidrati',
-    percent: 25,
     color: '#c8a2c8',
     why: 'Sono la fonte energetica preferita di cervello e muscoli durante molte attività quotidiane.',
     science:
-      'Il glucosio è il substrato principale del sistema nervoso centrale in condizioni normali. Amidi e cereali (pane, pasta, riso, patate, legumi) forniscono energia e, se integrali, anche fibre del gruppo B. Escluderli in modo rigido non è un requisito di “salute” e può ridurre l’energia disponibile e la varietà della dieta.',
+      'Il glucosio è il carburante principale e insostituibile per il tuo cervello, che senza di esso non può funzionare correttamente ed entra in uno stato di forte stress. Pane, pasta, riso, patate e legumi forniscono questa energia vitale e, soprattutto se integrali, apportano fibre e vitamine essenziali per il sistema nervoso e il metabolismo. Eliminare rigidamente i carboidrati non fa bene alla salute, ma spegne letteralmente le tue energie, causando stanchezza cronica, difficoltà di concentrazione e perdita di massa muscolare, poiché il corpo è costretto a "smontare" i muscoli per sopravvivere. Inoltre, la privazione altera gli ormoni della fame, costringendo il cervello a mandarti pensieri ossessivi sul cibo solo per difendersi dalla carenza energetica. Nutrire il tuo corpo con i carboidrati è una necessità biologica fondamentale per ritrovare la lucidità mentale, proteggere i tuoi muscoli e permetterti di guarire.',
   },
   {
     id: 'proteins',
     label: 'Proteine',
-    percent: 20,
     color: '#9b7a9b',
     why: 'Servono a costruire e riparare tessuti, enzimi, ormoni e a sostenere la sazietà.',
     science:
-      'Le proteine forniscono aminoacidi essenziali che il corpo non produce da solo. Fonti tipiche: carne, pesce, uova, latticini, legumi, tofu e alcune alternative vegetali. Il fabbisogno varia con età, massa magra e stato di salute; un apporto adeguato è parte di un’alimentazione completa, non un “supplemento estetico”.',
+      'Le proteine sono i mattoni fondamentali del tuo corpo, indispensabili per riparare i tessuti, far funzionare gli ormoni e mantenere forte il sistema immunitario. Fonti come legumi, uova, pesce, carne e derivati del latte forniscono gli aminoacidi essenziali che l\'organismo non è in grado di produrre da solo e che deve necessariamente assumere dal cibo. Eliminare rigidamente le proteine o ridurle drasticamente non fa bene alla salute, ma costringe il corpo ad attivare il catabolismo, un processo in cui l\'organismo "smonta" i tuoi stessi muscoli e intacca gli organi vitali pur di recuperare gli aminoacidi mancanti. Questa carenza spegne le tue energie, indebolisce i capelli, la pelle e le unghie, e altera i segnali biologici della sazietà, aumentando l\'ansia e i pensieri ossessivi legati al cibo come risposta di pura sopravvivenza del cervello.',
   },
   {
     id: 'fats',
     label: 'Grassi',
-    percent: 12,
     color: '#d4a574',
     why: 'Servono all’assorbimento di vitamine liposolubili, alla struttura delle membrane e a diversi ormoni.',
     science:
-      'Acidi grassi essenziali (omega-3 e omega-6) non sono sintetizzati in quantità sufficienti e vanno assunti con il cibo (es. olio d’oliva, frutta secca, semi, pesce grasso). Le vitamine A, D, E e K richiedono grassi per essere assorbite bene. I grassi non sono “il nemico”: la qualità e il contesto del pasto contano più del moralismo sul singolo alimento.',
+      'I grassi sono nutrienti essenziali e indispensabili per la tua sopravvivenza, poiché costituiscono la struttura di tutte le tue cellule e sono i mattoni fondamentali per produrre gli ormoni, compresi quelli che regolano il ciclo, l\'umore e l\'energia. Fonti sane come l\'olio d\'oliva, la frutta secca, l\'avocado e i grassi presenti in pesci e uova permettono inoltre al tuo corpo di assorbire le vitamine vitali (come la A, la D, la E e la K) che altrimenti andrebbero perse. Eliminare rigidamente i grassi dalla dieta non protegge la salute, ma danneggia il sistema ormonale, spegne l\'efficienza del cervello — che è fatto per il 60% di grasso —, rende la pelle secca e i capelli fragili, e priva il corpo dell\'isolamento termico necessario per non sentire sempre freddo. Inoltre, la loro restrizione manda il cervello in uno stato di allarme biochimico, scatenando pensieri ossessivi sul cibo e attacchi di fame improvvisi proprio come disperato tentativo di autodifesa.',
   },
   {
     id: 'sugars',
     label: 'Zuccheri',
-    percent: 8,
     color: '#b48bb4',
     why: 'Forniscono energia rapida; in un pasto bilanciato possono comparire in quantità contenute, non come “proibizione assoluta”.',
     science:
-      'Gli zuccheri semplici (glucosio, fruttosio, saccarosio) sono carboidrati a rapido assorbimento. Sono presenti naturalmente in frutta e latticini e aggiunti in molti prodotti. In termini fisiologici non esiste un alimento “intrinsecamente immorale”: ciò che conta nel tempo è il pattern complessivo di alimentazione, l’energia e il benessere. In contesti di paura del cibo, etichettare gli zuccheri come “veleno” non è supportato dalla scienza nutrizionale generale.',
+      'Gli zuccheri semplici, come il glucosio, il fruttosio e il saccarosio, sono carboidrati a rapido assorbimento presenti naturalmente nella frutta e nei latticini, oltre che aggiunti in altri prodotti, e rappresentano una fonte di energia immediata per il tuo organismo. In termini fisiologici non esiste un alimento o uno zucchero intrinsecamente "cattivo" o "immorale", e la scienza nutrizionale dimostra chiaramente che etichettare gli zuccheri come un veleno è un falso mito privo di fondamento scientifico. Gli zuccheri semplici non fanno assolutamente ingrassare se inseriti nel giusto modo all\'interno di un pattern complessivo di alimentazione, poiché ciò che conta davvero nel tempo è l\'equilibrio totale, l\'energia e il benessere psicofisico, non il singolo ingrediente. Quando soffri di un disturbo alimentare, la paura del cibo e le regole rigide cercano di farti credere che questi nutrienti siano pericolosi, ma la realtà biochimica è che il tuo corpo sa esattamente come metabolizzarli per trasformarli in calore, vitalità e prontezza mentale. Nutrire il tuo corpo includendo anche gli zuccheri senza colpevolizzarti è un passo fondamentale per abbattere l\'ansia, normalizzare il rapporto con il cibo e disinnescare i pensieri ossessivi generati dalla privazione.',
   },
   {
     id: 'micronutrients',
     label: 'Micronutrienti',
-    percent: 5,
     color: '#6b9bb8',
     why: 'Vitamine e minerali regolano metabolismo, ossa, sangue, sistema immunitario e tanti processi cellulari.',
     science:

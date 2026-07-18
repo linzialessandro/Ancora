@@ -44,14 +44,15 @@ export type SliceGeometry = {
 };
 
 export function buildPieSlices(
-  items: { id: string; percent: number }[],
+  items: { id: string; value?: number }[],
   cx: number,
   cy: number,
   radius: number,
 ): SliceGeometry[] {
+  const total = items.reduce((sum, item) => sum + (item.value ?? 1), 0);
   let angle = 0;
   return items.map((item) => {
-    const sweep = (item.percent / 100) * 360;
+    const sweep = total > 0 ? ((item.value ?? 1) / total) * 360 : 0;
     const startAngle = angle;
     const endAngle = angle + sweep;
     const midAngle = startAngle + sweep / 2;
