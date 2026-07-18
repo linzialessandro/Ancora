@@ -1,10 +1,11 @@
-import type { Entry, Settings } from '../types/models';
+import type { Entry, Settings, DayDataMap } from '../types/models';
 
 const SCHEMA_VERSION = 1;
 const KEYS = {
   VERSION: 'ancora:schemaVersion',
   SETTINGS: 'ancora:settings',
   ENTRIES: 'ancora:entries',
+  DAY_DATA: 'ancora:dayData',
 } as const;
 
 function normalizeEntry(raw: unknown): Entry | null {
@@ -102,6 +103,34 @@ export const storage = {
     }
   },
 
+  getDayData(): DayDataMap {
+    try {
+      const data = localStorage.getItem(KEYS.DAY_DATA);
+      if (!data) return {};
+      const parsed = JSON.parse(data);
+      if (!parsed || typeof parsed !== 'object') return {};
+      // Ensure all values are strings
+      const result: DayDataMap = {};
+      for (const [k, v] of Object.entries(parsed)) {
+        if (typeof v === 'string') {
+          result[k] = v;
+        }
+      }
+      return result;
+    } catch {
+      return {};
+    }
+  },
+
+  setDayData(dayData: DayDataMap): boolean {
+    try {
+      localStorage.setItem(KEYS.DAY_DATA, JSON.stringify(dayData));
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
   exportBackup(): string {
     return JSON.stringify(
       {
@@ -110,6 +139,7 @@ export const storage = {
         exportedAt: new Date().toISOString(),
         settings: this.getSettings(),
         entries: this.getEntries(),
+        dayData: this.getDayData(),
       },
       null,
       2,
@@ -121,6 +151,7 @@ export const storage = {
       const data = JSON.parse(jsonString) as {
         settings?: Partial<Settings>;
         entries?: unknown[];
+        dayData?: Record<string, unknown>;
       };
 
       if (!data || typeof data !== 'object') return false;
@@ -130,7 +161,6 @@ export const storage = {
         .map(normalizeEntry)
         .filter((e): e is Entry => e !== null);
 
-      // Reject completely empty garbage payloads that aren't real backups
       if (data.entries.length > 0 && entries.length === 0) return false;
 
       const settings: Settings = {
@@ -140,8 +170,19 @@ export const storage = {
             : '',
       };
 
+      const dayData: DayDataMap = {};
+      if (data.dayData && typeof data.dayData === 'object') {
+        for (const [k, v] of Object.entries(data.dayData)) {
+          if (typeof v === 'string') {
+            dayData[k] = v;
+          }
+        }
+      }
+
       if (!this.setSettings(settings)) return false;
       if (!this.setEntries(entries)) return false;
+      if (!this.setDayData(dayData)) return false;
+      
       this.migrate();
       return true;
     } catch {
@@ -153,10 +194,10 @@ export const storage = {
     try {
       localStorage.removeItem(KEYS.SETTINGS);
       localStorage.removeItem(KEYS.ENTRIES);
+      localStorage.removeItem(KEYS.DAY_DATA);
       localStorage.removeItem(KEYS.VERSION);
     } catch {
       // ignore
     }
   },
 };
-

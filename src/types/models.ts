@@ -18,3 +18,6 @@ export type Entry = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type DayDataMap = Record<string, string>;
+

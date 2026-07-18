@@ -4,10 +4,12 @@ import { getTodayStr } from './lib/dates';
 import type { Entry } from './types/models';
 
 import { DayHeader } from './components/DayHeader';
+import { DayActivity } from './components/DayActivity';
 import { EntryList } from './components/EntryList';
 import { EntryForm } from './components/EntryForm';
 import { SettingsScreen } from './components/SettingsScreen';
 import { InfoScreen } from './components/InfoScreen';
+import { ExportModal } from './components/ExportModal';
 import { Plus, Settings as SettingsIcon, FileDown, Info } from 'lucide-react';
 
 function App() {
@@ -15,9 +17,11 @@ function App() {
     isReady,
     entries,
     settings,
+    dayDataMap,
     error,
     clearError,
     saveSettings,
+    setDayData,
     addEntry,
     updateEntry,
     deleteEntry,
@@ -31,6 +35,7 @@ function App() {
   const [editingEntry, setEditingEntry] = useState<Entry | undefined>(undefined);
   const [showSettings, setShowSettings] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
   const [pdfMessage, setPdfMessage] = useState<string | null>(null);
 
   if (!isReady) {
@@ -48,6 +53,7 @@ function App() {
   }
 
   const currentEntries = entries.filter((e) => e.date === currentDate);
+  const currentActivity = dayDataMap[currentDate] || '';
 
   const handleOpenFormNew = () => {
     setEditingEntry(undefined);
@@ -73,18 +79,16 @@ function App() {
     setShowForm(false);
   };
 
-  const handleExportPdf = async () => {
-    if (entries.length === 0) {
-      setPdfMessage('Nessuna registrazione da esportare.');
-      window.setTimeout(() => setPdfMessage(null), 3500);
-      return;
-    }
+  const handleExportPdf = async (startDate: string, endDate: string) => {
     try {
-      const { generateDiaryPdf } = await import('./lib/pdf');
-      // Tutte le date: un unico foglio (o pochi) per il curante
-      generateDiaryPdf(entries, settings);
-    } catch {
-      setPdfMessage('Impossibile generare il PDF. Riprova.');
+      const { generatePdf } = await import('./lib/pdf');
+      generatePdf(entries, settings, dayDataMap, startDate, endDate);
+    } catch (err) {
+      if (err instanceof Error) {
+        setPdfMessage(err.message);
+      } else {
+        setPdfMessage('Impossibile generare il PDF. Riprova.');
+      }
       window.setTimeout(() => setPdfMessage(null), 3500);
     }
   };
@@ -117,10 +121,10 @@ function App() {
             </button>
             <button
               type="button"
-              onClick={handleExportPdf}
+              onClick={() => setShowExportModal(true)}
               className="p-2.5 min-w-11 min-h-11 hover:bg-white/20 rounded-full transition-colors"
-              title="Esporta PDF (tutte le registrazioni)"
-              aria-label="Esporta PDF con tutte le registrazioni"
+              title="Esporta PDF"
+              aria-label="Esporta PDF"
             >
               <FileDown size={22} />
             </button>
@@ -157,6 +161,11 @@ function App() {
         <DayHeader dateStr={currentDate} onChangeDate={setCurrentDate} />
 
         <div className="flex-1 overflow-y-auto bg-gradient-to-b from-lilac-50 to-lilac-100/40">
+          <DayActivity 
+            dateStr={currentDate} 
+            activityText={currentActivity} 
+            onSave={(text) => setDayData(currentDate, text)} 
+          />
           <EntryList entries={currentEntries} onEditEntry={handleOpenFormEdit} />
         </div>
 
@@ -194,6 +203,15 @@ function App() {
       )}
 
       {showInfo && <InfoScreen onClose={() => setShowInfo(false)} />}
+      
+      {showExportModal && (
+        <ExportModal 
+          entries={entries} 
+          dayDataMap={dayDataMap} 
+          onClose={() => setShowExportModal(false)} 
+          onExport={handleExportPdf} 
+        />
+      )}
     </div>
   );
 }

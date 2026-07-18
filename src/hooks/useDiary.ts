@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Entry, Settings } from '../types/models';
+import type { Entry, Settings, DayDataMap } from '../types/models';
 import { storage } from '../lib/storage';
 
 const STORAGE_ERROR =
@@ -8,6 +8,7 @@ const STORAGE_ERROR =
 export function useDiary() {
   const [entries, setEntriesState] = useState<Entry[]>([]);
   const [settings, setSettingsState] = useState<Settings>({ pazienteNome: '' });
+  const [dayDataMap, setDayDataMapState] = useState<DayDataMap>({});
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,6 +17,7 @@ export function useDiary() {
       storage.migrate();
       setEntriesState(storage.getEntries());
       setSettingsState(storage.getSettings());
+      setDayDataMapState(storage.getDayData());
     } catch {
       setError(STORAGE_ERROR);
     } finally {
@@ -32,6 +34,22 @@ export function useDiary() {
       return false;
     }
     setSettingsState(newSettings);
+    setError(null);
+    return true;
+  }, []);
+
+  const setDayData = useCallback((dateStr: string, text: string): boolean => {
+    let ok = false;
+    setDayDataMapState((prev) => {
+      const updated = { ...prev, [dateStr]: text };
+      ok = storage.setDayData(updated);
+      if (!ok) return prev;
+      return updated;
+    });
+    if (!ok) {
+      setError(STORAGE_ERROR);
+      return false;
+    }
     setError(null);
     return true;
   }, []);
@@ -88,6 +106,7 @@ export function useDiary() {
     storage.clearAll();
     setEntriesState([]);
     setSettingsState({ pazienteNome: '' });
+    setDayDataMapState({});
     setError(null);
   }, []);
 
@@ -96,6 +115,7 @@ export function useDiary() {
     if (success) {
       setEntriesState(storage.getEntries());
       setSettingsState(storage.getSettings());
+      setDayDataMapState(storage.getDayData());
       setError(null);
     } else {
       setError('Importazione non riuscita. Il file non è un backup Ancora valido.');
@@ -111,9 +131,11 @@ export function useDiary() {
     isReady,
     entries,
     settings,
+    dayDataMap,
     error,
     clearError,
     saveSettings,
+    setDayData,
     addEntry,
     updateEntry,
     deleteEntry,
