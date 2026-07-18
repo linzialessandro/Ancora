@@ -91,7 +91,7 @@ export function BodyScreen({
             <p className="text-xs font-semibold text-lilac-700 uppercase tracking-wide mb-1">
               Stereotipo tipico
             </p>
-            <p className="text-sm text-ink leading-relaxed italic">
+            <p className="text-sm text-ink leading-relaxed italic whitespace-pre-wrap">
               {resolveBodyText(selected.stereotype, gender)}
             </p>
           </div>
@@ -99,7 +99,7 @@ export function BodyScreen({
             <p className="text-xs font-semibold text-lilac-700 uppercase tracking-wide mb-1">
               Cosa dice la scienza
             </p>
-            <p className="text-sm text-ink leading-relaxed">
+            <p className="text-sm text-ink leading-relaxed whitespace-pre-wrap">
               {resolveBodyText(selected.science, gender)}
             </p>
           </div>
