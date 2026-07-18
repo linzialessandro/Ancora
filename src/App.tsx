@@ -117,11 +117,9 @@ function App() {
 
         {view === 'body' && (
           <BodyScreen
-            gender={settings.gender}
             onBack={goHome}
             onInfo={() => setSectionInfo('body')}
             onDonate={() => setShowDonate(true)}
-            onOpenSettings={() => setShowSettings(true)}
           />
         )}
 

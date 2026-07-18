@@ -1,8 +1,5 @@
-export type Gender = 'female' | 'male';
-
 export type Settings = {
   pazienteNome: string;
-  gender: Gender;
 };
 
 export type Entry = {

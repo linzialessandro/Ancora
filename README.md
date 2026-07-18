@@ -2,8 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-C8A2C8.svg)](./LICENSE)
 
-Diario alimentare digitale, **interamente in italiano**.  
-Pensato per l’uso quotidiano su smartphone: neutro, rispettoso e **solo client-side** — i dati restano sul dispositivo, senza account e senza server.
+Strumenti digitali in italiano per un percorso di consapevolezza alimentare: **diario**, **piramide dei cibifobici**, **corpo** e **piatto**.  
+Pensati per l’uso quotidiano su smartphone: rispettosi e **solo client-side** — i dati restano sul dispositivo, senza account e senza server.
 
 Tema visivo ispirato al **fiocchetto lilla** (simbolo della consapevolezza sui disturbi del comportamento alimentare).
 
@@ -14,9 +14,9 @@ Tema visivo ispirato al **fiocchetto lilla** (simbolo della consapevolezza sui d
 
 ## A chi serve
 
-A chi compila un diario alimentare (per sé o in percorso di cura) e vuole sostituire il foglio cartaceo con uno strumento semplice, esportabile in PDF da consegnare al curante.
+A chi compila un diario alimentare (per sé o in percorso di cura) e vuole uno strumento semplice, esportabile in PDF da consegnare al curante; e a chi vuole mappe educative (cibi che spaventano, stereotipi sul corpo, componenti di un pasto) senza giudizi.
 
-L’interfaccia **non** include messaggi motivazionali, giudizi o gamification: è uno strumento funzionale e sobrio.
+L’interfaccia **non** include gamification: è uno strumento funzionale e sobrio.
 
 ---
 
@@ -24,7 +24,7 @@ L’interfaccia **non** include messaggi motivazionali, giudizi o gamification: 
 
 ### Home
 
-All’avvio una schermata pulita con quattro strumenti. In ogni sezione: **Info** contestuale e **Dona** (QR + PayPal).
+All’avvio una schermata con quattro strumenti. In ogni sezione: **Info** contestuale e **Dona** (QR + PayPal). Sulla home anche panoramica completa e Impostazioni.
 
 ### Diario alimentare
 
@@ -38,19 +38,19 @@ All’avvio una schermata pulita con quattro strumenti. In ogni sezione: **Info*
 
 ### Piramide dei cibifobici
 
-- Piramide personale a 5 livelli (base = meno paura, cima = più paura)
+- Piramide personale a 5 livelli etichettati **Base → Cima** (nella Info: base = meno paura, cima = più paura)
 - Aggiunta libera di cibi; modifica, spostamento ed eliminazione
 - Salvata in locale e inclusa nel backup JSON
 
 ### Il mio corpo
 
-- Silhouette stilizzata maschile o femminile (genere in Impostazioni)
-- Parti del corpo cliccabili: stereotipo tipico + spiegazione scientifica concisa
+- Silhouette stilizzata femminile
+- Parti del corpo cliccabili: stereotipo tipico + spiegazione scientifica
 
 ### Il piatto
 
-- Diagramma a torta con 6 componenti (ortaggi, carboidrati, proteine, grassi, zuccheri, micronutrienti)
-- Tocca una fetta per una spiegazione scientifica semplice e basata su dati generali
+- Diagramma a torta con 6 componenti uguali (ortaggi, carboidrati, proteine, grassi, zuccheri, micronutrienti)
+- Tocca una fetta per una spiegazione su perché quel componente conta (non è una dieta prescritta)
 
 ### Trasversale
 
@@ -60,11 +60,11 @@ All’avvio una schermata pulita con quattro strumenti. In ogni sezione: **Info*
 
 ---
 
-## Uso consigliato (ciclo di lavoro)
+## Uso consigliato (ciclo di lavoro del diario)
 
 1. Compila il diario giorno per giorno sull’app.
 2. Quando serve, imposta il **nome** in Impostazioni (come sul diario cartaceo).
-3. Tocca **Esporta PDF**: ottieni un’unica tabella con tutte le date inserite.
+3. Nel diario, tocca **Esporta PDF**: ottieni le registrazioni del periodo scelto.
 4. Stampa (o invia) il PDF al curante.
 
 ### Dopo la consegna

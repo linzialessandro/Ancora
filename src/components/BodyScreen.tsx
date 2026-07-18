@@ -1,25 +1,17 @@
 import { useState } from 'react';
-import type { BodyPartId, Gender } from '../types/models';
-import { BODY_PARTS, resolveBodyText } from '../data/bodyStereotypes';
+import type { BodyPartId } from '../types/models';
+import { BODY_PARTS } from '../data/bodyStereotypes';
 import { BodySilhouette } from './body/BodySilhouette';
 import { SectionHeader } from './SectionHeader';
 import { DetailPanel } from './DetailPanel';
 
 type Props = {
-  gender: Gender;
   onBack: () => void;
   onInfo: () => void;
   onDonate: () => void;
-  onOpenSettings?: () => void;
 };
 
-export function BodyScreen({
-  gender,
-  onBack,
-  onInfo,
-  onDonate,
-  onOpenSettings,
-}: Props) {
+export function BodyScreen({ onBack, onInfo, onDonate }: Props) {
   const [selectedId, setSelectedId] = useState<BodyPartId | null>(null);
   const selected = BODY_PARTS.find((p) => p.id === selectedId) ?? null;
 
@@ -33,33 +25,13 @@ export function BodyScreen({
       />
 
       <div className="flex-1 overflow-y-auto bg-gradient-to-b from-lilac-50 to-lilac-100/40 px-4 py-4 pb-[max(2rem,env(safe-area-inset-bottom))]">
-        <p className="text-sm text-ink-muted text-center leading-relaxed mb-2 px-1">
+        <p className="text-sm text-ink-muted text-center leading-relaxed mb-4 px-1">
           Tocca una parte del corpo per leggere uno stereotipo comune e una risposta
           scientifica semplice.
         </p>
-        <p className="text-xs text-center text-lilac-700 mb-4">
-          Silhouette {gender === 'female' ? 'femminile' : 'maschile'}
-          {onOpenSettings && (
-            <>
-              {' · '}
-              <button
-                type="button"
-                onClick={onOpenSettings}
-                className="underline underline-offset-2 hover:text-lilac-800"
-              >
-                Cambia in Impostazioni
-              </button>
-            </>
-          )}
-        </p>
 
         <div className="section-card p-4 flex justify-center">
-          <BodySilhouette
-            key={gender}
-            gender={gender}
-            selected={selectedId}
-            onSelect={setSelectedId}
-          />
+          <BodySilhouette selected={selectedId} onSelect={setSelectedId} />
         </div>
 
         <ul className="mt-4 grid grid-cols-2 gap-2">
@@ -91,16 +63,16 @@ export function BodyScreen({
             <p className="text-xs font-semibold text-lilac-700 uppercase tracking-wide mb-1">
               Stereotipo tipico
             </p>
-            <p className="text-sm text-ink leading-relaxed italic whitespace-pre-wrap">
-              {resolveBodyText(selected.stereotype, gender)}
+            <p className="text-sm text-ink leading-relaxed italic whitespace-pre-line">
+              {selected.stereotype}
             </p>
           </div>
           <div>
             <p className="text-xs font-semibold text-lilac-700 uppercase tracking-wide mb-1">
               Cosa dice la scienza
             </p>
-            <p className="text-sm text-ink leading-relaxed whitespace-pre-wrap">
-              {resolveBodyText(selected.science, gender)}
+            <p className="text-sm text-ink leading-relaxed whitespace-pre-line">
+              {selected.science}
             </p>
           </div>
         </DetailPanel>

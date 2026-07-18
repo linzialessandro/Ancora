@@ -3,7 +3,6 @@ import type {
   Settings,
   DayDataMap,
   FoodPhobiaPyramid,
-  Gender,
   PyramidLevelId,
   PyramidItem,
 } from '../types/models';
@@ -18,20 +17,13 @@ const KEYS = {
   PYRAMID: 'ancora:foodPhobiaPyramid',
 } as const;
 
-const DEFAULT_GENDER: Gender = 'female';
-
-function normalizeGender(v: unknown): Gender {
-  return v === 'male' || v === 'female' ? v : DEFAULT_GENDER;
-}
-
 function normalizeSettings(raw: unknown): Settings {
   if (!raw || typeof raw !== 'object') {
-    return { pazienteNome: '', gender: DEFAULT_GENDER };
+    return { pazienteNome: '' };
   }
   const s = raw as Record<string, unknown>;
   return {
     pazienteNome: typeof s.pazienteNome === 'string' ? s.pazienteNome : '',
-    gender: normalizeGender(s.gender),
   };
 }
 
@@ -121,7 +113,7 @@ export const storage = {
     } catch {
       // fallthrough
     }
-    return { pazienteNome: '', gender: DEFAULT_GENDER };
+    return { pazienteNome: '' };
   },
 
   setSettings(settings: Settings): boolean {
@@ -130,7 +122,6 @@ export const storage = {
         KEYS.SETTINGS,
         JSON.stringify({
           pazienteNome: settings.pazienteNome,
-          gender: normalizeGender(settings.gender),
         }),
       );
       return true;

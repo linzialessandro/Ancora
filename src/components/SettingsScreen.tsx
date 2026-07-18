@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import type { Gender, Settings } from '../types/models';
+import type { Settings } from '../types/models';
 import { ConfirmDialog } from './ConfirmDialog';
 import { Upload, Download, Trash2, X } from 'lucide-react';
 
@@ -21,7 +21,6 @@ export function SettingsScreen({
   onClose,
 }: Props) {
   const [nome, setNome] = useState(settings.pazienteNome);
-  const [gender, setGender] = useState<Gender>(settings.gender);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [showImportConfirm, setShowImportConfirm] = useState(false);
   const [importData, setImportData] = useState<string | null>(null);
@@ -38,7 +37,6 @@ export function SettingsScreen({
     const ok = onSaveSettings({
       ...settings,
       pazienteNome: nome.trim(),
-      gender,
     });
     if (ok) {
       onClose();
@@ -128,60 +126,21 @@ export function SettingsScreen({
             <h3 className="text-sm font-semibold text-lilac-700 uppercase tracking-wide mb-3">
               Informazioni personali
             </h3>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label htmlFor="paziente-nome" className="block text-sm font-medium text-ink">
-                  Nome (come sul diario)
-                </label>
-                <input
-                  id="paziente-nome"
-                  type="text"
-                  value={nome}
-                  onChange={(e) => setNome(e.target.value)}
-                  placeholder="es. Sig./ra Rossi"
-                  className="input-field"
-                  autoComplete="name"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <p className="block text-sm font-medium text-ink" id="gender-label">
-                  Genere (per «Il mio corpo»)
-                </p>
-                <div
-                  className="grid grid-cols-2 gap-2"
-                  role="group"
-                  aria-labelledby="gender-label"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setGender('female')}
-                    className={`min-h-11 rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors ${
-                      gender === 'female'
-                        ? 'border-lilac-500 bg-lilac-100 text-ink'
-                        : 'border-lilac-200 bg-surface text-ink-muted hover:border-lilac-300'
-                    }`}
-                    aria-pressed={gender === 'female'}
-                  >
-                    Femminile
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setGender('male')}
-                    className={`min-h-11 rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors ${
-                      gender === 'male'
-                        ? 'border-lilac-500 bg-lilac-100 text-ink'
-                        : 'border-lilac-200 bg-surface text-ink-muted hover:border-lilac-300'
-                    }`}
-                    aria-pressed={gender === 'male'}
-                  >
-                    Maschile
-                  </button>
-                </div>
-              </div>
-
-              <button type="button" onClick={handleSave} className="btn-primary mt-1">
-                Salva impostazioni
+            <div className="space-y-2">
+              <label htmlFor="paziente-nome" className="block text-sm font-medium text-ink">
+                Nome (come sul diario)
+              </label>
+              <input
+                id="paziente-nome"
+                type="text"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                placeholder="es. Sig./ra Rossi"
+                className="input-field"
+                autoComplete="name"
+              />
+              <button type="button" onClick={handleSave} className="btn-primary mt-2">
+                Salva nome
               </button>
             </div>
           </section>

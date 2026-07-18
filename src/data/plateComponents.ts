@@ -8,7 +8,7 @@ export type PlateComponent = {
   science: string;
 };
 
-/** Percentages sum to 100. Educational model, not a clinical prescription. */
+/** Equal educational slices (not portion weights). Not a clinical prescription. */
 export const PLATE_COMPONENTS: PlateComponent[] = [
   {
     id: 'vegetables',

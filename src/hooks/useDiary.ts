@@ -10,7 +10,6 @@ export function useDiary() {
   const [entries, setEntriesState] = useState<Entry[]>([]);
   const [settings, setSettingsState] = useState<Settings>({
     pazienteNome: '',
-    gender: 'female',
   });
   const [dayDataMap, setDayDataMapState] = useState<DayDataMap>({});
   const [pyramid, setPyramidState] = useState<FoodPhobiaPyramid>(createEmptyPyramid());
@@ -122,7 +121,7 @@ export function useDiary() {
   const clearAll = useCallback(() => {
     storage.clearAll();
     setEntriesState([]);
-    setSettingsState({ pazienteNome: '', gender: 'female' });
+    setSettingsState({ pazienteNome: '' });
     setDayDataMapState({});
     setPyramidState(createEmptyPyramid());
     setError(null);

@@ -38,11 +38,10 @@ export const SECTION_INFO: Record<AppSection, SectionInfoContent> = {
   body: {
     title: 'Il mio corpo',
     intro:
-      'Esplora stereotipi comuni su parti del corpo e una risposta scientifica breve e concreta.',
+      'Esplora stereotipi comuni su parti del corpo e una risposta scientifica che li mette in prospettiva.',
     steps: [
-      'Imposta il genere (maschile o femminile) nelle Impostazioni dalla home: sceglie la silhouette.',
-      'Tocca una parte del corpo sulla figura.',
-      'Leggi lo stereotipo tipico e la spiegazione scientifica che lo mette in prospettiva.',
+      'Tocca una parte del corpo sulla figura (o usa i pulsanti sotto).',
+      'Leggi lo stereotipo tipico e la spiegazione scientifica.',
       'Puoi chiudere il pannello e provarne un’altra.',
     ],
     note: 'Informazioni generali: non sostituiscono il parere di un professionista della salute.',
@@ -50,7 +49,7 @@ export const SECTION_INFO: Record<AppSection, SectionInfoContent> = {
   plate: {
     title: 'Il piatto',
     intro:
-      'Un diagramma educativo dei componenti di un pasto. Le percentuali sono indicative, non una dieta prescritta.',
+      'Un diagramma educativo dei componenti di un pasto. Le fette sono uguali: non è una dieta prescritta né un conteggio di porzioni.',
     steps: [
       'Guarda le sei fette: ortaggi, carboidrati, proteine, grassi, zuccheri, micronutrienti.',
       'Tocca una fetta o la voce in legenda.',
