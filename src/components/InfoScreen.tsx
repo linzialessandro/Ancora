@@ -45,7 +45,7 @@ export function InfoScreen({ onClose, onOpenDonate }: Props) {
                 il curante.
               </li>
               <li>
-                <strong className="font-semibold text-lilac-700">Piramide dei cibifobici</strong>
+                <strong className="font-semibold text-lilac-700">Piramide dei cibi fobici</strong>
                 {' — '}
                 ordina i tuoi cibi dalla base (meno paura) alla cima (più paura).
               </li>
@@ -72,8 +72,8 @@ export function InfoScreen({ onClose, onOpenDonate }: Props) {
             </h3>
             <p className="text-sm text-ink-muted leading-relaxed">
               Tutto è salvato in locale. Nelle Impostazioni puoi esportare/importare un
-              backup JSON (utile se cambi telefono) o eliminare i dati. Il PDF del diario è
-              pensato per la consegna al curante.
+              backup JSON unico (diario, piramide e impostazioni; utile se cambi telefono)
+              o eliminare i dati. Il PDF del diario è pensato per la consegna al curante.
             </p>
           </section>
 

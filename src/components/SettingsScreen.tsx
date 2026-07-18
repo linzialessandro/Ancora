@@ -150,8 +150,9 @@ export function SettingsScreen({
               Dati e backup
             </h3>
             <p className="text-sm text-ink-muted mb-3 leading-relaxed">
-              Esporta un backup periodicamente, soprattutto prima di cambiare telefono o
-              cancellare i dati del browser.
+              Un solo file JSON include diario, piramide dei cibi fobici e impostazioni.
+              Esportalo periodicamente, soprattutto prima di cambiare telefono o cancellare
+              i dati del browser.
             </p>
             <div className="space-y-3">
               <button type="button" onClick={handleExport} className="btn-secondary w-full">
@@ -196,7 +197,7 @@ export function SettingsScreen({
             <p className="leading-relaxed">
               I tuoi dati sono salvati esclusivamente su questo dispositivo. Non vengono
               inviati a nessun server, non c&apos;è tracciamento e non vengono usati cookie.
-              Esporta backup regolari per non perdere le registrazioni.
+              Esporta backup regolari per non perdere diario e piramide.
             </p>
           </section>
         </div>
@@ -205,7 +206,7 @@ export function SettingsScreen({
       <ConfirmDialog
         isOpen={showImportConfirm}
         title="Importa backup"
-        message="Importando il backup sovrascriverai i dati attuali. Questa operazione non può essere annullata. Vuoi continuare?"
+        message="Importando il backup sovrascriverai i dati attuali (diario, piramide dei cibi fobici e impostazioni). Questa operazione non può essere annullata. Vuoi continuare?"
         confirmText="Importa"
         isDanger
         onConfirm={confirmImport}
@@ -218,7 +219,7 @@ export function SettingsScreen({
       <ConfirmDialog
         isOpen={showClearConfirm}
         title="Elimina tutti i dati"
-        message="Sei sicuro di voler eliminare tutte le registrazioni, la piramide dei cibifobici e le impostazioni? L'operazione non può essere annullata: senza un backup i dati andranno persi."
+        message="Sei sicuro di voler eliminare tutte le registrazioni, la piramide dei cibi fobici e le impostazioni? L'operazione non può essere annullata: senza un backup i dati andranno persi."
         confirmText="Sì, elimina tutto"
         isDanger
         onConfirm={confirmClear}

@@ -29,7 +29,7 @@ const CARDS: {
   },
   {
     id: 'pyramid',
-    title: 'Piramide dei cibifobici',
+    title: 'Piramide dei cibi fobici',
     description: 'Ordina i cibi per quanto ti spaventano',
     icon: Layers,
   },

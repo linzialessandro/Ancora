@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-C8A2C8.svg)](./LICENSE)
 
-Strumenti digitali in italiano per un percorso di consapevolezza alimentare: **diario**, **piramide dei cibifobici**, **corpo** e **piatto**.  
+Strumenti digitali in italiano per un percorso di consapevolezza alimentare: **diario**, **piramide dei cibi fobici**, **corpo** e **piatto**.  
 Pensati per l’uso quotidiano su smartphone: rispettosi e **solo client-side** — i dati restano sul dispositivo, senza account e senza server.
 
 Tema visivo ispirato al **fiocchetto lilla** (simbolo della consapevolezza sui disturbi del comportamento alimentare).
@@ -36,7 +36,7 @@ All’avvio una schermata con quattro strumenti. In ogni sezione: **Info** conte
   - durata in minuti (opzionale)
 - **Esportazione PDF** landscape con le registrazioni, pensata per stampare e consegnare al curante
 
-### Piramide dei cibifobici
+### Piramide dei cibi fobici
 
 - Piramide personale a 5 livelli etichettati **Base → Cima** (nella Info: base = meno paura, cima = più paura)
 - Aggiunta libera di cibi; modifica, spostamento ed eliminazione

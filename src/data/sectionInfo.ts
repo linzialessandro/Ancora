@@ -22,7 +22,7 @@ export const SECTION_INFO: Record<AppSection, SectionInfoContent> = {
     note: 'Dopo la consegna del PDF puoi eliminare i dati e ricominciare un nuovo periodo.',
   },
   pyramid: {
-    title: 'Piramide dei cibifobici',
+    title: 'Piramide dei cibi fobici',
     intro:
       'Costruisci la tua mappa personale dei cibi in base a quanto ti spaventano. Non è un giudizio di valore.',
     steps: [
@@ -31,7 +31,7 @@ export const SECTION_INFO: Record<AppSection, SectionInfoContent> = {
       'Alto e Cima: i cibi che ti spaventano di più.',
       'Aggiungi liberamente i nomi dei cibi (es. toast, pizza, bistecca).',
       'Puoi spostare un cibo di un livello con le frecce, modificarlo o rimuoverlo.',
-      'La piramide si salva da sola su questo dispositivo.',
+      'La piramide si salva da sola su questo dispositivo ed è inclusa nel backup JSON (Impostazioni).',
     ],
     note: 'È uno strumento di consapevolezza, non una classifica di cibi “giusti” o “sbagliati”.',
   },
