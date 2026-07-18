@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import type { Settings } from '../types/models';
+import type { Gender, Settings } from '../types/models';
 import { ConfirmDialog } from './ConfirmDialog';
 import { Upload, Download, Trash2, X } from 'lucide-react';
 
@@ -21,6 +21,7 @@ export function SettingsScreen({
   onClose,
 }: Props) {
   const [nome, setNome] = useState(settings.pazienteNome);
+  const [gender, setGender] = useState<Gender>(settings.gender);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [showImportConfirm, setShowImportConfirm] = useState(false);
   const [importData, setImportData] = useState<string | null>(null);
@@ -33,8 +34,12 @@ export function SettingsScreen({
     window.setTimeout(() => setFeedback(null), 4000);
   };
 
-  const handleSaveNome = () => {
-    const ok = onSaveSettings({ ...settings, pazienteNome: nome.trim() });
+  const handleSave = () => {
+    const ok = onSaveSettings({
+      ...settings,
+      pazienteNome: nome.trim(),
+      gender,
+    });
     if (ok) {
       onClose();
     } else {
@@ -123,21 +128,60 @@ export function SettingsScreen({
             <h3 className="text-sm font-semibold text-lilac-700 uppercase tracking-wide mb-3">
               Informazioni personali
             </h3>
-            <div className="space-y-2">
-              <label htmlFor="paziente-nome" className="block text-sm font-medium text-ink">
-                Nome (come sul diario)
-              </label>
-              <input
-                id="paziente-nome"
-                type="text"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-                placeholder="es. Sig./ra Rossi"
-                className="input-field"
-                autoComplete="name"
-              />
-              <button type="button" onClick={handleSaveNome} className="btn-primary mt-2">
-                Salva nome
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label htmlFor="paziente-nome" className="block text-sm font-medium text-ink">
+                  Nome (come sul diario)
+                </label>
+                <input
+                  id="paziente-nome"
+                  type="text"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  placeholder="es. Sig./ra Rossi"
+                  className="input-field"
+                  autoComplete="name"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <p className="block text-sm font-medium text-ink" id="gender-label">
+                  Genere (per «Il mio corpo»)
+                </p>
+                <div
+                  className="grid grid-cols-2 gap-2"
+                  role="group"
+                  aria-labelledby="gender-label"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setGender('female')}
+                    className={`min-h-11 rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors ${
+                      gender === 'female'
+                        ? 'border-lilac-500 bg-lilac-100 text-ink'
+                        : 'border-lilac-200 bg-surface text-ink-muted hover:border-lilac-300'
+                    }`}
+                    aria-pressed={gender === 'female'}
+                  >
+                    Femminile
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setGender('male')}
+                    className={`min-h-11 rounded-xl border px-3 py-2.5 text-sm font-medium transition-colors ${
+                      gender === 'male'
+                        ? 'border-lilac-500 bg-lilac-100 text-ink'
+                        : 'border-lilac-200 bg-surface text-ink-muted hover:border-lilac-300'
+                    }`}
+                    aria-pressed={gender === 'male'}
+                  >
+                    Maschile
+                  </button>
+                </div>
+              </div>
+
+              <button type="button" onClick={handleSave} className="btn-primary mt-1">
+                Salva impostazioni
               </button>
             </div>
           </section>
@@ -215,7 +259,7 @@ export function SettingsScreen({
       <ConfirmDialog
         isOpen={showClearConfirm}
         title="Elimina tutti i dati"
-        message="Sei sicuro di voler eliminare tutte le registrazioni e le impostazioni? L'operazione non può essere annullata: senza un backup i dati andranno persi."
+        message="Sei sicuro di voler eliminare tutte le registrazioni, la piramide dei cibifobici e le impostazioni? L'operazione non può essere annullata: senza un backup i dati andranno persi."
         confirmText="Sì, elimina tutto"
         isDanger
         onConfirm={confirmClear}

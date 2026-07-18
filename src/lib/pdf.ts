@@ -59,7 +59,7 @@ export function generatePdf(
   }
 
   // Generate table for each day
-  allDates.forEach((date, index) => {
+  allDates.forEach((date) => {
     const dayEntries = filteredEntries.filter(e => e.date === date).sort((a, b) => a.ora.localeCompare(b.ora));
     const dayActivity = dayDataMap[date]?.trim() || '';
 
@@ -178,7 +178,9 @@ export function generatePdf(
       margin: { left: 10, right: 10 },
       didDrawPage: function (data) {
         // Reset currentY to after the table
-        currentY = data.cursor.y + 15;
+        if (data.cursor) {
+          currentY = data.cursor.y + 15;
+        }
       }
     });
     // For single page tables, didDrawPage updates currentY.

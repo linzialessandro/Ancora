@@ -1,5 +1,8 @@
+export type Gender = 'female' | 'male';
+
 export type Settings = {
   pazienteNome: string;
+  gender: Gender;
 };
 
 export type Entry = {
@@ -21,3 +24,46 @@ export type Entry = {
 
 export type DayDataMap = Record<string, string>;
 
+export type PyramidLevelId = 1 | 2 | 3 | 4 | 5;
+
+export type PyramidItem = {
+  id: string;
+  label: string;
+};
+
+export type FoodPhobiaPyramid = {
+  levels: Record<PyramidLevelId, PyramidItem[]>;
+};
+
+export type BodyPartId =
+  | 'head'
+  | 'arms'
+  | 'chest'
+  | 'belly'
+  | 'hips'
+  | 'legs'
+  | 'overall';
+
+export type PlateComponentId =
+  | 'vegetables'
+  | 'carbs'
+  | 'proteins'
+  | 'fats'
+  | 'sugars'
+  | 'micronutrients';
+
+export type AppSection = 'diary' | 'pyramid' | 'body' | 'plate';
+
+export type AppView = 'home' | AppSection;
+
+export function createEmptyPyramid(): FoodPhobiaPyramid {
+  return {
+    levels: {
+      1: [],
+      2: [],
+      3: [],
+      4: [],
+      5: [],
+    },
+  };
+}

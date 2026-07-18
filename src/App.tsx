@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { useDiary } from './hooks/useDiary';
-import { getTodayStr } from './lib/dates';
-import type { Entry } from './types/models';
+import type { AppSection, AppView } from './types/models';
 
-import { DayHeader } from './components/DayHeader';
-import { DayActivity } from './components/DayActivity';
-import { EntryList } from './components/EntryList';
-import { EntryForm } from './components/EntryForm';
+import { HomeScreen } from './components/HomeScreen';
+import { DiaryScreen } from './components/DiaryScreen';
+import { PyramidScreen } from './components/PyramidScreen';
+import { BodyScreen } from './components/BodyScreen';
+import { PlateScreen } from './components/PlateScreen';
 import { SettingsScreen } from './components/SettingsScreen';
 import { InfoScreen } from './components/InfoScreen';
-import { ExportModal } from './components/ExportModal';
-import { Plus, Settings as SettingsIcon, FileDown, Info } from 'lucide-react';
+import { SectionInfoScreen } from './components/SectionInfoScreen';
+import { DonateScreen } from './components/DonateScreen';
 
 function App() {
   const {
@@ -18,10 +18,12 @@ function App() {
     entries,
     settings,
     dayDataMap,
+    pyramid,
     error,
     clearError,
     saveSettings,
     setDayData,
+    savePyramid,
     addEntry,
     updateEntry,
     deleteEntry,
@@ -30,12 +32,11 @@ function App() {
     exportBackup,
   } = useDiary();
 
-  const [currentDate, setCurrentDate] = useState(getTodayStr());
-  const [showForm, setShowForm] = useState(false);
-  const [editingEntry, setEditingEntry] = useState<Entry | undefined>(undefined);
+  const [view, setView] = useState<AppView>('home');
   const [showSettings, setShowSettings] = useState(false);
-  const [showInfo, setShowInfo] = useState(false);
-  const [showExportModal, setShowExportModal] = useState(false);
+  const [showHomeInfo, setShowHomeInfo] = useState(false);
+  const [sectionInfo, setSectionInfo] = useState<AppSection | null>(null);
+  const [showDonate, setShowDonate] = useState(false);
   const [pdfMessage, setPdfMessage] = useState<string | null>(null);
 
   if (!isReady) {
@@ -52,32 +53,7 @@ function App() {
     );
   }
 
-  const currentEntries = entries.filter((e) => e.date === currentDate);
-  const currentActivity = dayDataMap[currentDate] || '';
-
-  const handleOpenFormNew = () => {
-    setEditingEntry(undefined);
-    setShowForm(true);
-  };
-
-  const handleOpenFormEdit = (entry: Entry) => {
-    setEditingEntry(entry);
-    setShowForm(true);
-  };
-
-  const handleSaveEntry = (entry: Entry) => {
-    if (editingEntry) {
-      updateEntry(entry);
-    } else {
-      addEntry(entry);
-    }
-    setShowForm(false);
-  };
-
-  const handleDeleteEntry = (id: string) => {
-    deleteEntry(id);
-    setShowForm(false);
-  };
+  const goHome = () => setView('home');
 
   const handleExportPdf = async (startDate: string, endDate: string) => {
     try {
@@ -93,103 +69,70 @@ function App() {
     }
   };
 
-  const banner = error || pdfMessage;
-
   return (
-    <div className="min-h-dvh bg-lilac-100/80 text-ink pb-[max(6rem,env(safe-area-inset-bottom))] md:pb-8 flex flex-col items-center">
+    <div
+      className={`min-h-dvh bg-lilac-100/80 text-ink md:pb-8 flex flex-col items-center ${
+        view === 'diary'
+          ? 'pb-[max(6rem,env(safe-area-inset-bottom))]'
+          : 'pb-[max(1rem,env(safe-area-inset-bottom))]'
+      }`}
+    >
       <div className="w-full max-w-md bg-surface min-h-dvh md:min-h-[min(100dvh,48rem)] md:my-8 md:rounded-3xl md:shadow-xl md:shadow-lilac-300/30 md:border border-lilac-200 overflow-hidden relative flex flex-col">
-        {/* Header */}
-        <header className="bg-gradient-to-br from-lilac-400 via-lilac-500 to-lilac-600 text-surface px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 flex justify-between items-center shadow-md shadow-lilac-600/20 z-20">
-          <div className="flex items-center gap-2.5">
-            <span
-              className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-white/20"
-              aria-hidden
-            >
-              <LilacRibbonIcon />
-            </span>
-            <h1 className="text-xl font-bold tracking-tight">Ancora</h1>
-          </div>
-          <div className="flex gap-0.5">
-            <button
-              type="button"
-              onClick={() => setShowInfo(true)}
-              className="p-2.5 min-w-11 min-h-11 hover:bg-white/20 rounded-full transition-colors"
-              title="Informazioni"
-              aria-label="Apri informazioni e donazioni"
-            >
-              <Info size={22} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowExportModal(true)}
-              className="p-2.5 min-w-11 min-h-11 hover:bg-white/20 rounded-full transition-colors"
-              title="Esporta PDF"
-              aria-label="Esporta PDF"
-            >
-              <FileDown size={22} />
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowSettings(true)}
-              className="p-2.5 min-w-11 min-h-11 hover:bg-white/20 rounded-full transition-colors"
-              title="Impostazioni"
-              aria-label="Apri impostazioni"
-            >
-              <SettingsIcon size={22} />
-            </button>
-          </div>
-        </header>
-
-        {banner && (
-          <div
-            role="alert"
-            className="mx-3 mt-3 px-3 py-2.5 rounded-xl bg-lilac-100 border border-lilac-300 text-sm text-ink flex justify-between items-start gap-2"
-          >
-            <span>{banner}</span>
-            {error && (
-              <button
-                type="button"
-                onClick={clearError}
-                className="text-lilac-700 font-medium shrink-0"
-              >
-                Chiudi
-              </button>
-            )}
-          </div>
+        {view === 'home' && (
+          <HomeScreen
+            onOpenSection={setView}
+            onOpenInfo={() => setShowHomeInfo(true)}
+            onOpenDonate={() => setShowDonate(true)}
+            onOpenSettings={() => setShowSettings(true)}
+          />
         )}
 
-        <DayHeader dateStr={currentDate} onChangeDate={setCurrentDate} />
-
-        <div className="flex-1 overflow-y-auto bg-gradient-to-b from-lilac-50 to-lilac-100/40">
-          <DayActivity 
-            dateStr={currentDate} 
-            activityText={currentActivity} 
-            onSave={(text) => setDayData(currentDate, text)} 
+        {view === 'diary' && (
+          <DiaryScreen
+            entries={entries}
+            dayDataMap={dayDataMap}
+            error={error}
+            pdfMessage={pdfMessage}
+            onClearError={clearError}
+            onAddEntry={addEntry}
+            onUpdateEntry={updateEntry}
+            onDeleteEntry={deleteEntry}
+            onSetDayData={setDayData}
+            onExportPdf={handleExportPdf}
+            onBack={goHome}
+            onInfo={() => setSectionInfo('diary')}
+            onDonate={() => setShowDonate(true)}
           />
-          <EntryList entries={currentEntries} onEditEntry={handleOpenFormEdit} />
-        </div>
+        )}
 
-        {/* FAB */}
-        <button
-          type="button"
-          onClick={handleOpenFormNew}
-          className="fixed md:absolute bottom-[max(1.5rem,env(safe-area-inset-bottom))] right-6 w-14 h-14 bg-lilac-500 text-surface rounded-full shadow-lg shadow-lilac-600/35 flex items-center justify-center hover:bg-lilac-600 hover:scale-105 active:scale-95 transition-all z-30"
-          title="Aggiungi registrazione"
-          aria-label="Aggiungi registrazione"
-        >
-          <Plus size={30} strokeWidth={2.25} />
-        </button>
+        {view === 'pyramid' && (
+          <PyramidScreen
+            pyramid={pyramid}
+            onSave={savePyramid}
+            onBack={goHome}
+            onInfo={() => setSectionInfo('pyramid')}
+            onDonate={() => setShowDonate(true)}
+          />
+        )}
+
+        {view === 'body' && (
+          <BodyScreen
+            gender={settings.gender}
+            onBack={goHome}
+            onInfo={() => setSectionInfo('body')}
+            onDonate={() => setShowDonate(true)}
+            onOpenSettings={() => setShowSettings(true)}
+          />
+        )}
+
+        {view === 'plate' && (
+          <PlateScreen
+            onBack={goHome}
+            onInfo={() => setSectionInfo('plate')}
+            onDonate={() => setShowDonate(true)}
+          />
+        )}
       </div>
-
-      {showForm && (
-        <EntryForm
-          entry={editingEntry}
-          dateStr={currentDate}
-          onSave={handleSaveEntry}
-          onCancel={() => setShowForm(false)}
-          onDelete={handleDeleteEntry}
-        />
-      )}
 
       {showSettings && (
         <SettingsScreen
@@ -202,37 +145,22 @@ function App() {
         />
       )}
 
-      {showInfo && <InfoScreen onClose={() => setShowInfo(false)} />}
-      
-      {showExportModal && (
-        <ExportModal 
-          entries={entries} 
-          dayDataMap={dayDataMap} 
-          onClose={() => setShowExportModal(false)} 
-          onExport={handleExportPdf} 
+      {showHomeInfo && (
+        <InfoScreen
+          onClose={() => setShowHomeInfo(false)}
+          onOpenDonate={() => {
+            setShowHomeInfo(false);
+            setShowDonate(true);
+          }}
         />
       )}
-    </div>
-  );
-}
 
-function LilacRibbonIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.75"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M12 12 L8 21 M12 12 L16 21" />
-      <path d="M12 12 C9 6 4 8 7 14" />
-      <path d="M12 12 C15 6 20 8 17 14" />
-    </svg>
+      {sectionInfo && (
+        <SectionInfoScreen section={sectionInfo} onClose={() => setSectionInfo(null)} />
+      )}
+
+      {showDonate && <DonateScreen onClose={() => setShowDonate(false)} />}
+    </div>
   );
 }
 

@@ -7,7 +7,7 @@ type Props = {
   onSave: (text: string) => void;
 };
 
-export function DayActivity({ dateStr, activityText, onSave }: Props) {
+export function DayActivity({ dateStr: _dateStr, activityText, onSave }: Props) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(activityText);
 

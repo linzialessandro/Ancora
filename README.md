@@ -22,14 +22,39 @@ L’interfaccia **non** include messaggi motivazionali, giudizi o gamification: 
 
 ## Funzionalità
 
+### Home
+
+All’avvio una schermata pulita con quattro strumenti. In ogni sezione: **Info** contestuale e **Dona** (QR + PayPal).
+
+### Diario alimentare
+
 - Navigazione per giorno (frecce + selettore data)
 - Registrazioni con i campi del diario cartaceo:
   - ora, dove, con chi
   - fame, sazietà, soddisfazione (scale 1–10)
   - alimenti e bevande, pensieri, emozioni
   - durata in minuti (opzionale)
+- **Esportazione PDF** landscape con le registrazioni, pensata per stampare e consegnare al curante
+
+### Piramide dei cibifobici
+
+- Piramide personale a 5 livelli (base = meno paura, cima = più paura)
+- Aggiunta libera di cibi; modifica, spostamento ed eliminazione
+- Salvata in locale e inclusa nel backup JSON
+
+### Il mio corpo
+
+- Silhouette stilizzata maschile o femminile (genere in Impostazioni)
+- Parti del corpo cliccabili: stereotipo tipico + spiegazione scientifica concisa
+
+### Il piatto
+
+- Diagramma a torta con 6 componenti (ortaggi, carboidrati, proteine, grassi, zuccheri, micronutrienti)
+- Tocca una fetta per una spiegazione scientifica semplice e basata su dati generali
+
+### Trasversale
+
 - Salvataggio automatico in locale (`localStorage`)
-- **Esportazione PDF** landscape con **tutte** le registrazioni (ordinate per data e ora), pensata per **1–2 fogli** da stampare e consegnare
 - Export / import backup JSON (cambio telefono o browser)
 - Nessuna telemetria, nessun cookie di tracciamento
 

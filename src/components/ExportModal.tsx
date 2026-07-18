@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { X, FileDown, Calendar } from 'lucide-react';
 import type { Entry, DayDataMap } from '../types/models';
-import { formatItalianDate } from '../lib/dates';
 
 type Props = {
   entries: Entry[];

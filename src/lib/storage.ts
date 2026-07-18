@@ -1,12 +1,66 @@
-import type { Entry, Settings, DayDataMap } from '../types/models';
+import type {
+  Entry,
+  Settings,
+  DayDataMap,
+  FoodPhobiaPyramid,
+  Gender,
+  PyramidLevelId,
+  PyramidItem,
+} from '../types/models';
+import { createEmptyPyramid } from '../types/models';
 
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 const KEYS = {
   VERSION: 'ancora:schemaVersion',
   SETTINGS: 'ancora:settings',
   ENTRIES: 'ancora:entries',
   DAY_DATA: 'ancora:dayData',
+  PYRAMID: 'ancora:foodPhobiaPyramid',
 } as const;
+
+const DEFAULT_GENDER: Gender = 'female';
+
+function normalizeGender(v: unknown): Gender {
+  return v === 'male' || v === 'female' ? v : DEFAULT_GENDER;
+}
+
+function normalizeSettings(raw: unknown): Settings {
+  if (!raw || typeof raw !== 'object') {
+    return { pazienteNome: '', gender: DEFAULT_GENDER };
+  }
+  const s = raw as Record<string, unknown>;
+  return {
+    pazienteNome: typeof s.pazienteNome === 'string' ? s.pazienteNome : '',
+    gender: normalizeGender(s.gender),
+  };
+}
+
+function normalizePyramidItem(raw: unknown): PyramidItem | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const item = raw as Record<string, unknown>;
+  if (typeof item.id !== 'string' || typeof item.label !== 'string') return null;
+  const label = item.label.trim();
+  if (!label) return null;
+  return { id: item.id, label };
+}
+
+function normalizePyramid(raw: unknown): FoodPhobiaPyramid {
+  const empty = createEmptyPyramid();
+  if (!raw || typeof raw !== 'object') return empty;
+  const data = raw as { levels?: unknown };
+  if (!data.levels || typeof data.levels !== 'object') return empty;
+
+  const levels = data.levels as Record<string, unknown>;
+  const result = createEmptyPyramid();
+  for (const id of [1, 2, 3, 4, 5] as PyramidLevelId[]) {
+    const list = levels[String(id)] ?? levels[id as unknown as string];
+    if (!Array.isArray(list)) continue;
+    result.levels[id] = list
+      .map(normalizePyramidItem)
+      .filter((item): item is PyramidItem => item !== null);
+  }
+  return result;
+}
 
 function normalizeEntry(raw: unknown): Entry | null {
   if (!raw || typeof raw !== 'object') return null;
@@ -62,18 +116,23 @@ export const storage = {
     try {
       const data = localStorage.getItem(KEYS.SETTINGS);
       if (data) {
-        const parsed = JSON.parse(data) as Partial<Settings>;
-        return { pazienteNome: typeof parsed.pazienteNome === 'string' ? parsed.pazienteNome : '' };
+        return normalizeSettings(JSON.parse(data));
       }
     } catch {
       // fallthrough
     }
-    return { pazienteNome: '' };
+    return { pazienteNome: '', gender: DEFAULT_GENDER };
   },
 
   setSettings(settings: Settings): boolean {
     try {
-      localStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
+      localStorage.setItem(
+        KEYS.SETTINGS,
+        JSON.stringify({
+          pazienteNome: settings.pazienteNome,
+          gender: normalizeGender(settings.gender),
+        }),
+      );
       return true;
     } catch {
       return false;
@@ -109,7 +168,6 @@ export const storage = {
       if (!data) return {};
       const parsed = JSON.parse(data);
       if (!parsed || typeof parsed !== 'object') return {};
-      // Ensure all values are strings
       const result: DayDataMap = {};
       for (const [k, v] of Object.entries(parsed)) {
         if (typeof v === 'string') {
@@ -131,6 +189,26 @@ export const storage = {
     }
   },
 
+  getFoodPhobiaPyramid(): FoodPhobiaPyramid {
+    try {
+      const data = localStorage.getItem(KEYS.PYRAMID);
+      if (!data) return createEmptyPyramid();
+      return normalizePyramid(JSON.parse(data));
+    } catch {
+      return createEmptyPyramid();
+    }
+  },
+
+  setFoodPhobiaPyramid(pyramid: FoodPhobiaPyramid): boolean {
+    try {
+      const normalized = normalizePyramid(pyramid);
+      localStorage.setItem(KEYS.PYRAMID, JSON.stringify(normalized));
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
   exportBackup(): string {
     return JSON.stringify(
       {
@@ -140,6 +218,7 @@ export const storage = {
         settings: this.getSettings(),
         entries: this.getEntries(),
         dayData: this.getDayData(),
+        foodPhobiaPyramid: this.getFoodPhobiaPyramid(),
       },
       null,
       2,
@@ -149,9 +228,10 @@ export const storage = {
   importBackup(jsonString: string): boolean {
     try {
       const data = JSON.parse(jsonString) as {
-        settings?: Partial<Settings>;
+        settings?: unknown;
         entries?: unknown[];
         dayData?: Record<string, unknown>;
+        foodPhobiaPyramid?: unknown;
       };
 
       if (!data || typeof data !== 'object') return false;
@@ -163,12 +243,7 @@ export const storage = {
 
       if (data.entries.length > 0 && entries.length === 0) return false;
 
-      const settings: Settings = {
-        pazienteNome:
-          data.settings && typeof data.settings.pazienteNome === 'string'
-            ? data.settings.pazienteNome
-            : '',
-      };
+      const settings = normalizeSettings(data.settings ?? {});
 
       const dayData: DayDataMap = {};
       if (data.dayData && typeof data.dayData === 'object') {
@@ -179,10 +254,13 @@ export const storage = {
         }
       }
 
+      const pyramid = normalizePyramid(data.foodPhobiaPyramid);
+
       if (!this.setSettings(settings)) return false;
       if (!this.setEntries(entries)) return false;
       if (!this.setDayData(dayData)) return false;
-      
+      if (!this.setFoodPhobiaPyramid(pyramid)) return false;
+
       this.migrate();
       return true;
     } catch {
@@ -195,6 +273,7 @@ export const storage = {
       localStorage.removeItem(KEYS.SETTINGS);
       localStorage.removeItem(KEYS.ENTRIES);
       localStorage.removeItem(KEYS.DAY_DATA);
+      localStorage.removeItem(KEYS.PYRAMID);
       localStorage.removeItem(KEYS.VERSION);
     } catch {
       // ignore
