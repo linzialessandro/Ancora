@@ -107,12 +107,9 @@ export function PyramidScreen({ pyramid, onSave, onBack, onInfo, onDonate }: Pro
                   className={`w-full rounded-xl border px-3 py-2.5 shadow-sm ${meta.bandClass}`}
                 >
                   <div className="flex items-center justify-between gap-2 mb-2">
-                    <div className="min-w-0">
-                      <p className="text-xs font-semibold uppercase tracking-wide opacity-90">
-                        {meta.shortLabel}
-                      </p>
-                      <p className="text-sm font-medium truncate">{meta.label}</p>
-                    </div>
+                    <p className="text-sm font-semibold uppercase tracking-wide truncate">
+                      {meta.label}
+                    </p>
                     <button
                       type="button"
                       onClick={() => {

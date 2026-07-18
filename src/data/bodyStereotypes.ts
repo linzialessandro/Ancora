@@ -11,18 +11,26 @@ export const BODY_PARTS: BodyPartContent[] = [
   {
     id: 'head',
     label: 'Viso e testa',
-    stereotype:
-      '«Un viso “perfetto” ha proporzioni da filtro social: mandibola netta, zero gonfiore, pelle sempre uniforme.»',
+    stereotype: {
+      female:
+        '«Un viso “perfetto” ha proporzioni da filtro: zigomi alti, mandibola fine, zero gonfiore, pelle sempre uniforme.»',
+      male:
+        '«Un viso “da uomo” ha mandibola netta e lineamenti duri; se è morbido o “gonfio”, manca di disciplina.»',
+    },
     science:
       'La forma del viso è influenzata da genetica, età, ormoni, idratazione, sonno e composizione corporea complessiva. Ritenzione idrica e fluttuazioni ormonali possono cambiare l’aspetto da un giorno all’altro senza indicare un “fallimento”. Non esiste una sola proporzione facciale associata a salute clinica. I filtri e le angolazioni delle foto alterano sistematicamente la percezione del “normale”.',
   },
   {
     id: 'arms',
     label: 'Braccia',
-    stereotype:
-      '«Le braccia devono essere magre e toniche; se si muovono o hanno grasso, è segno di scarso controllo.»',
+    stereotype: {
+      female:
+        '«Le braccia devono essere magre e “pulite”; se oscillano o hanno grasso, è segno di scarso controllo.»',
+      male:
+        '«Le braccia devono essere grosse e venose; se non lo sono, non ti stai allenando abbastanza.»',
+    },
     science:
-      'Le braccia contengono muscolo, tessuto adiposo, pelle e tessuto connettivo in proporzioni diverse da persona a persona. Il grasso sottocutaneo ha funzioni di riserva energetica e isolamento termico. La “tonificazione” visibile dipende da genetica, distribuzione del tessuto e livello di allenamento, non da un valore morale. Movimento e forza funzionale non si leggono solo dalla circonferenza del braccio.',
+      'Le braccia contengono muscolo, tessuto adiposo, pelle e tessuto connettivo in proporzioni diverse da persona a persona. Il grasso sottocutaneo ha funzioni di riserva energetica e isolamento termico. La “tonificazione” o l’ipertrofia visibile dipendono da genetica, allenamento e distribuzione del tessuto, non da un valore morale. Movimento e forza funzionale non si leggono solo dalla circonferenza del braccio.',
   },
   {
     id: 'chest',
@@ -67,16 +75,28 @@ export const BODY_PARTS: BodyPartContent[] = [
   {
     id: 'legs',
     label: 'Gambe',
-    stereotype:
-      '«Cosce e polpacci devono essere sottili e “puliti”; cellulite, vene o volume sono difetti.»',
-    science:
-      'Le gambe reggono il peso, camminano, corrono: muscoli (quadricipiti, ischiocrurali, polpacci) e tessuto adiposo sono funzionali. La cellulite è un aspetto del tessuto sottocutaneo molto comune, soprattutto dopo la pubertà, e non equivale a una patologia. Vene superficiali visibili possono essere del tutto normali. Forza, equilibrio e capacità di muoversi dicono più sulla funzione delle gambe di quanto faccia un’estetica da catalogo.',
+    stereotype: {
+      female:
+        '«Cosce e polpacci devono essere sottili e “puliti”; cellulite, vene o volume sono difetti.»',
+      male:
+        '«Le gambe devono essere magre in basso e “quadricipiti da palestra” in alto; tutto il resto è sbagliato.»',
+    },
+    science: {
+      female:
+        'Le gambe reggono il peso e permettono di camminare e correre: muscoli e tessuto adiposo sono funzionali. La cellulite è un aspetto del tessuto sottocutaneo molto comune dopo la pubertà e non equivale a una patologia. Vene superficiali visibili possono essere normali. Forza ed equilibrio dicono più della funzione di quanto faccia un’estetica da catalogo.',
+      male:
+        'Le gambe includono grandi gruppi muscolari (quadricipiti, ischiocrurali, polpacci) con proporzioni molto variabili. L’aspetto “definito” dei media spesso riflette selezione genetica, luce e basso grasso corporeo non rappresentativo. La forza e la capacità di muoversi contano più del confronto con standard estetici maschili delle riviste fitness.',
+    },
   },
   {
     id: 'overall',
     label: 'Corpo intero',
-    stereotype:
-      '«Esiste un corpo “giusto” uguale per tutti: magro, simmetrico, giovane. Se non ci assomigli, stai sbagliando.»',
+    stereotype: {
+      female:
+        '«Esiste un corpo femminile “giusto”: magro, curvy al punto giusto, giovane. Se non ci assomigli, stai sbagliando.»',
+      male:
+        '«Esiste un corpo maschile “giusto”: largo di spalle, stretto di vita, muscoloso. Se non ci assomigli, manca impegno.»',
+    },
     science:
       'Salute e aspetto non coincidono in un’unica silhouette. Peso, forma e composizione dipendono da genetica, età, sesso, malattie, farmaci, accessibilità al cibo e al movimento, e storia di vita. I canoni estetici cambiano nel tempo e tra culture; i media amplificano pochi corpi selezionati. Un approccio basato su dati privilegia funzioni (energia, sonno, salute mentale, esami clinici quando indicati) rispetto al confronto estetico costante. Nessuno strumento o app sostituisce un percorso di cura personalizzato.',
   },

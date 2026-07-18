@@ -55,6 +55,7 @@ export function BodyScreen({
 
         <div className="section-card p-4 flex justify-center">
           <BodySilhouette
+            key={gender}
             gender={gender}
             selected={selectedId}
             onSelect={setSelectedId}

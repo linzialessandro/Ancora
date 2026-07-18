@@ -26,8 +26,9 @@ export const SECTION_INFO: Record<AppSection, SectionInfoContent> = {
     intro:
       'Costruisci la tua mappa personale dei cibi in base a quanto ti spaventano. Non è un giudizio di valore.',
     steps: [
-      'Alla base metti i cibi che ti spaventano di meno (comfort food).',
-      'Verso la cima metti quelli che ti spaventano di più.',
+      'Base: i cibi che ti spaventano di meno (comfort food).',
+      'Basso e Medio: paura intermedia.',
+      'Alto e Cima: i cibi che ti spaventano di più.',
       'Aggiungi liberamente i nomi dei cibi (es. toast, pizza, bistecca).',
       'Puoi spostare un cibo di un livello con le frecce, modificarlo o rimuoverlo.',
       'La piramide si salva da sola su questo dispositivo.',
