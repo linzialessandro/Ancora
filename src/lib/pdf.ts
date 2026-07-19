@@ -42,20 +42,20 @@ export function generatePdf(
   doc.rect(0, 0, 297, 4, 'F');
 
   doc.setTextColor(...INK);
-  doc.setFontSize(16);
+  doc.setFontSize(18);
   doc.setFont('helvetica', 'bold');
-  doc.text('DIARIO ALIMENTARE', 14, 16);
+  doc.text('DIARIO ALIMENTARE', 14, 20);
 
   doc.setFont('helvetica', 'normal');
-  doc.setFontSize(11);
+  doc.setFontSize(12);
   doc.setTextColor(...LILAC_DARK);
-  doc.text(`Periodo: ${periodLabel}`, 14, 23);
+  doc.text(`Periodo: ${periodLabel}`, 14, 28);
 
   doc.setTextColor(...INK);
-  let currentY = 32;
+  let currentY = 40;
   if (pazienteStr) {
-    doc.setFontSize(10);
-    doc.text(pazienteStr, 14, 29);
+    doc.setFontSize(11);
+    doc.text(pazienteStr, 14, 34);
   }
 
   // Generate table for each day
@@ -66,44 +66,16 @@ export function generatePdf(
     const formattedDate = formatItalianDate(date);
     const dayOfWeek = formatItalianDayOfWeek(date);
 
-    // If not the first table, we might need to check if there is enough space for the header at least
-    // autoTable handles its own page breaks, but we draw text before it.
-    // If we are near the bottom (e.g. > 180), add a new page.
-    if (currentY > 175) {
-      doc.addPage();
-      currentY = 20;
-    }
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(...INK);
-    doc.text(`Data: ${dayOfWeek}, ${formattedDate}`, 14, currentY);
-    currentY += 6;
-
-    if (dayActivity) {
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('ATTIVITÀ FISICA: ', 14, currentY);
-      const labelWidth = doc.getTextWidth('ATTIVITÀ FISICA: ');
-      
-      doc.setFont('helvetica', 'normal');
-      const lines = doc.splitTextToSize(dayActivity, 277 - 14 - labelWidth);
-      doc.text(lines, 14 + labelWidth, currentY);
-      currentY += (lines.length * 4) + 2;
-    } else {
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(9);
-      doc.text('ATTIVITÀ FISICA: ', 14, currentY);
-      const labelWidth = doc.getTextWidth('ATTIVITÀ FISICA: ');
-      
-      doc.setFont('helvetica', 'italic');
-      doc.setTextColor(...LILAC_DARK);
-      doc.text('Nessuna registrata', 14 + labelWidth, currentY);
-      doc.setTextColor(...INK);
-      currentY += 6;
-    }
-
     if (dayEntries.length === 0) {
+      if (currentY > 180) {
+        doc.addPage();
+        currentY = 20;
+      }
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(11);
+      doc.setTextColor(...INK);
+      doc.text(`Data: ${dayOfWeek}, ${formattedDate}`, 14, currentY);
+      currentY += 6;
       doc.setFont('helvetica', 'italic');
       doc.setFontSize(9);
       doc.setTextColor(...LILAC_DARK);
@@ -114,10 +86,24 @@ export function generatePdf(
 
     const hasDurata = dayEntries.some(e => e.durataMinuti !== null && e.durataMinuti !== undefined);
 
-    const head = [[
-      'ORA', 'DOVE', 'CON CHI', 'FAME', 'ALIMENTI E BEVANDE', 'PENSIERI', 'EMOZIONI', 'SAZIETÀ', 'SODDISF.',
-      ...(hasDurata ? ['DURATA'] : [])
-    ]];
+    const head: any[] = [
+      [
+        { 
+          content: `Data: ${dayOfWeek}, ${formattedDate}`, 
+          colSpan: 4, 
+          styles: { halign: 'left', fillColor: [242, 230, 242], textColor: INK, fontStyle: 'bold', fontSize: 10 } 
+        },
+        { 
+          content: `ATTIVITÀ FISICA: ${dayActivity || 'Nessuna registrata'}`, 
+          colSpan: hasDurata ? 6 : 5, 
+          styles: { halign: 'left', fillColor: [242, 230, 242], textColor: INK, fontStyle: 'normal', fontSize: 9 } 
+        }
+      ],
+      [
+        'ORA', 'DOVE', 'CON CHI', 'FAME', 'ALIMENTI E BEVANDE', 'PENSIERI', 'EMOZIONI', 'SAZIETÀ', 'SODDISF.',
+        ...(hasDurata ? ['DURATA'] : [])
+      ]
+    ];
 
     const body = dayEntries.map(e => {
       const row = [
@@ -142,7 +128,7 @@ export function generatePdf(
       head,
       body,
       theme: 'grid',
-      pageBreak: 'avoid',
+      showHead: 'firstPage',
       headStyles: {
         fillColor: LILAC,
         textColor: [255, 255, 255],
