@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useDiary } from './hooks/useDiary';
+import { storage } from './lib/storage';
 import type { AppSection, AppView } from './types/models';
 
 import { HomeScreen } from './components/HomeScreen';
@@ -11,6 +12,7 @@ import { SettingsScreen } from './components/SettingsScreen';
 import { InfoScreen } from './components/InfoScreen';
 import { SectionInfoScreen } from './components/SectionInfoScreen';
 import { DonateScreen } from './components/DonateScreen';
+import { SupportPromptDialog } from './components/SupportPromptDialog';
 
 function App() {
   const {
@@ -37,6 +39,7 @@ function App() {
   const [showHomeInfo, setShowHomeInfo] = useState(false);
   const [sectionInfo, setSectionInfo] = useState<AppSection | null>(null);
   const [showDonate, setShowDonate] = useState(false);
+  const [showSupportPrompt, setShowSupportPrompt] = useState(false);
   const [pdfMessage, setPdfMessage] = useState<string | null>(null);
 
   if (!isReady) {
@@ -59,6 +62,9 @@ function App() {
     try {
       const { generatePdf } = await import('./lib/pdf');
       generatePdf(entries, settings, dayDataMap, startDate, endDate);
+      if (!storage.isDonatePromptHidden()) {
+        setShowSupportPrompt(true);
+      }
     } catch (err) {
       if (err instanceof Error) {
         setPdfMessage(err.message);
@@ -156,6 +162,19 @@ function App() {
       {sectionInfo && (
         <SectionInfoScreen section={sectionInfo} onClose={() => setSectionInfo(null)} />
       )}
+
+      <SupportPromptDialog
+        isOpen={showSupportPrompt}
+        onOpenDonate={() => {
+          setShowSupportPrompt(false);
+          setShowDonate(true);
+        }}
+        onDismiss={() => setShowSupportPrompt(false)}
+        onNeverShowAgain={() => {
+          storage.setDonatePromptHidden(true);
+          setShowSupportPrompt(false);
+        }}
+      />
 
       {showDonate && <DonateScreen onClose={() => setShowDonate(false)} />}
     </div>

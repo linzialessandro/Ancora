@@ -1,5 +1,10 @@
 import { X, ExternalLink, Heart } from 'lucide-react';
-import { PAYPAL_DONATE_URL, PAYPAL_QR_SRC } from '../lib/constants';
+import {
+  PAYPAL_DONATE_URL,
+  PAYPAL_QR_SRC,
+  DONATE_SUGGESTED_AMOUNTS_EUR,
+  paypalDonateUrlWithAmount,
+} from '../lib/constants';
 
 type Props = {
   onClose: () => void;
@@ -31,10 +36,33 @@ export function DonateScreen({ onClose }: Props) {
             tua serenità viene prima di tutto.
           </p>
           <p className="text-sm text-ink-muted leading-relaxed">
-            Alessandro utilizza strumenti di intelligenza artificiale con un costo mensile
-            per creare e migliorare progetti come Ancora. Un piccolo contributo aiuta a
-            continuare.
+            Ancora resta gratuita e i tuoi dati restano solo sul dispositivo. Un piccolo
+            contributo volontario aiuta Alessandro a continuare a sviluppare e migliorare
+            strumenti come questo.
           </p>
+
+          <div className="rounded-2xl border border-lilac-200 bg-lilac-50/60 px-4 py-4 space-y-3">
+            <div>
+              <p className="text-sm font-medium text-ink">Importi suggeriti</p>
+              <p className="text-xs text-ink-muted mt-0.5 leading-relaxed">
+                Solo indicazioni, non obbligatorie. Puoi scegliere un altro importo su
+                PayPal.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {DONATE_SUGGESTED_AMOUNTS_EUR.map((amount) => (
+                <a
+                  key={amount}
+                  href={paypalDonateUrlWithAmount(amount)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-secondary flex-1 min-w-[4.5rem] text-sm"
+                >
+                  {amount}&nbsp;€
+                </a>
+              ))}
+            </div>
+          </div>
 
           <div className="rounded-2xl border border-lilac-300 bg-lilac-50 px-4 py-3">
             <p className="text-sm text-ink leading-relaxed">
@@ -52,7 +80,7 @@ export function DonateScreen({ onClose }: Props) {
               height={176}
             />
             <p className="text-xs text-ink-muted text-center max-w-xs">
-              Inquadra il codice con la fotocamera o con l&apos;app PayPal
+              Inquadra il codice con la fotocamera o con l&apos;app PayPal (importo libero)
             </p>
             <a
               href={PAYPAL_DONATE_URL}

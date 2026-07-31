@@ -26,3 +26,7 @@ dist-ssr
 # Local planning notes (not part of the app release)
 realplan.md
 plan.md
+
+# Local AI skills (project-only, not shared via git)
+.grok/skills/grill-me/
+.grok/skills/grilling/

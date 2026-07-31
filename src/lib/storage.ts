@@ -15,6 +15,8 @@ const KEYS = {
   ENTRIES: 'ancora:entries',
   DAY_DATA: 'ancora:dayData',
   PYRAMID: 'ancora:foodPhobiaPyramid',
+  /** Preferenza UI: non mostrare il prompt soft post-export PDF. Non entra nel backup. */
+  HIDE_DONATE_PROMPT: 'ancora:hideDonatePrompt',
 } as const;
 
 function normalizeSettings(raw: unknown): Settings {
@@ -268,6 +270,27 @@ export const storage = {
       localStorage.removeItem(KEYS.VERSION);
     } catch {
       // ignore
+    }
+  },
+
+  /** Se true, non mostrare il dialog soft post-export PDF. */
+  isDonatePromptHidden(): boolean {
+    try {
+      return localStorage.getItem(KEYS.HIDE_DONATE_PROMPT) === '1';
+    } catch {
+      return false;
+    }
+  },
+
+  setDonatePromptHidden(hidden: boolean): void {
+    try {
+      if (hidden) {
+        localStorage.setItem(KEYS.HIDE_DONATE_PROMPT, '1');
+      } else {
+        localStorage.removeItem(KEYS.HIDE_DONATE_PROMPT);
+      }
+    } catch {
+      // private mode / disabled storage
     }
   },
 };
