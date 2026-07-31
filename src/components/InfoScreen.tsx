@@ -1,4 +1,6 @@
-import { X, Heart } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { X, Heart, Share2, Copy, Check } from 'lucide-react';
+import { APP_PUBLIC_URL, APP_SHARE_MESSAGE } from '../lib/constants';
 
 type Props = {
   onClose: () => void;
@@ -6,6 +8,59 @@ type Props = {
 };
 
 export function InfoScreen({ onClose, onOpenDonate }: Props) {
+  const [copyState, setCopyState] = useState<'idle' | 'copied' | 'error'>('idle');
+  const [canNativeShare, setCanNativeShare] = useState(false);
+
+  useEffect(() => {
+    setCanNativeShare(typeof navigator !== 'undefined' && typeof navigator.share === 'function');
+  }, []);
+
+  useEffect(() => {
+    if (copyState === 'idle') return;
+    const t = window.setTimeout(() => setCopyState('idle'), 2500);
+    return () => window.clearTimeout(t);
+  }, [copyState]);
+
+  const handleCopyMessage = async () => {
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(APP_SHARE_MESSAGE);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = APP_SHARE_MESSAGE;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        const ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (!ok) throw new Error('copy failed');
+      }
+      setCopyState('copied');
+    } catch {
+      setCopyState('error');
+    }
+  };
+
+  const handleShare = async () => {
+    if (!navigator.share) {
+      await handleCopyMessage();
+      return;
+    }
+    try {
+      await navigator.share({
+        title: 'Ancora',
+        text: APP_SHARE_MESSAGE,
+        url: APP_PUBLIC_URL,
+      });
+    } catch (err) {
+      // User dismissed the sheet — not an error to surface.
+      if (err instanceof DOMException && err.name === 'AbortError') return;
+      await handleCopyMessage();
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-50 bg-lilac-50/95 flex flex-col md:p-4">
       <div className="flex-1 md:max-w-xl w-full mx-auto bg-surface md:border border-lilac-200 md:shadow-xl md:shadow-lilac-200/40 md:rounded-2xl flex flex-col h-full overflow-hidden">
@@ -75,6 +130,44 @@ export function InfoScreen({ onClose, onOpenDonate }: Props) {
               backup JSON unico (diario, piramide e impostazioni; utile se cambi telefono)
               o eliminare i dati. Il PDF del diario è pensato per la consegna al curante.
             </p>
+          </section>
+
+          <section className="rounded-2xl border border-lilac-200 bg-lilac-50/60 p-4 space-y-3">
+            <h3 className="text-sm font-semibold text-lilac-700 uppercase tracking-wide">
+              Per il curante / per chi ti accompagna
+            </h3>
+            <p className="text-sm text-ink leading-relaxed">
+              Ancora è uno strumento gratuito, solo sul telefono: niente account e niente
+              invio di dati a server. Serve a compilare un diario alimentare ed esportare un
+              PDF da stampare o inviare al curante. Include anche mappe educative (cibi
+              fobici, stereotipi sul corpo, componenti del pasto), senza giudizi e senza
+              sostituire un percorso di cura professionale.
+            </p>
+            <p className="text-xs text-ink-muted leading-relaxed break-all">{APP_PUBLIC_URL}</p>
+            <div className="flex flex-col sm:flex-row gap-2">
+              {canNativeShare ? (
+                <button type="button" onClick={handleShare} className="btn-primary flex-1">
+                  <Share2 size={18} aria-hidden />
+                  Condividi
+                </button>
+              ) : null}
+              <button
+                type="button"
+                onClick={handleCopyMessage}
+                className={canNativeShare ? 'btn-secondary flex-1' : 'btn-primary flex-1'}
+              >
+                {copyState === 'copied' ? (
+                  <Check size={18} aria-hidden />
+                ) : (
+                  <Copy size={18} aria-hidden />
+                )}
+                {copyState === 'copied'
+                  ? 'Messaggio copiato'
+                  : copyState === 'error'
+                    ? 'Copia non riuscita'
+                    : 'Copia messaggio'}
+              </button>
+            </div>
           </section>
 
           <section className="rounded-2xl bg-lilac-50 border border-lilac-100 p-4">
